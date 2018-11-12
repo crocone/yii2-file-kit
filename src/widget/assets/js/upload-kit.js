@@ -12,7 +12,7 @@
         var $container = $input.parent('div');
         var $files = $('<ul>', {"class":"files"}).insertBefore($input);
         var $emptyInput = $container.find('.empty-value');
-
+        var elem = -1;
         var methods = {
             init: function(){
                 if (options.multiple) {
@@ -35,11 +35,19 @@
                     .after($('<span class="glyphicon glyphicon-circle-arrow-down drag"></span>'))
                     .after($('<span/>', {"data-toggle":"popover", "class":"glyphicon glyphicon-exclamation-sign error-popover"}))
                     .after(
-                    '<div class="progress">'+
-                    '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>'+
-                    '</li>'
-                );
-                $files.on('click', '.upload-kit-item .remove', methods.removeItem);
+                        '<div class="progress">'+
+                        '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>'+
+                        '</li>'
+                    );
+                $files.on('click', '.upload-kit-item .remove', function() {
+                    $that = this;
+                    $('#delete-image').modal('show');
+
+                });
+                $(document).on('click', '#accept-delete-image', function() {
+                    methods.removeItem($that);
+                    $('#delete-image').modal('hide');
+                });
                 methods.checkInputVisibility();
                 methods.fileuploadInit();
                 methods.dragInit();
@@ -63,10 +71,10 @@
                     messages: options.messages,
                     process: true,
                     getNumberOfFiles: methods.getNumberOfFiles,
-                start: function (e, data) {
+                    start: function (e, data) {
                         $container.find('.upload-kit-input')
-                                .removeClass('error')
-                                .addClass('in-progress');
+                            .removeClass('error')
+                            .addClass('in-progress');
                         $input.trigger('start');
                         if (options.start !== undefined) options.start(e, data);
                     },
@@ -83,7 +91,8 @@
                         ).text(progress + '%');
                     },
                     done: function (e, data) {
-                        $.each(data.result.files, function (index, file) {
+
+                        $.each(data.result.files, function (index, file, length) {
                             if (!file.error) {
                                 var item = methods.createItem(file);
                                 item.appendTo($files);
@@ -95,6 +104,7 @@
                         methods.handleEmptyValue();
                         methods.checkInputVisibility();
                         $input.trigger('done');
+
                         if (options.done !== undefined) options.done(e, data);
                     },
                     fail: function (e, data) {
@@ -133,8 +143,8 @@
                 }
                 $container.find('.upload-kit-input').addClass('error');
             },
-            removeItem: function(e){
-                var $this = $(this);
+            removeItem: function(that){
+                var $this = $(that);
                 var url = $this.data('url');
                 if (url) {
                     $.ajax({
@@ -148,11 +158,9 @@
             },
             createItem: function(file){
                 var name = options.name;
-                var index = methods.getNewItemIndex();
                 if (options.multiple) {
-                    name += '[' + index + ']';
+                    name += '[' + elem++ + ']';
                 }
-                console.log(options);
                 var item = $('<li>', {"class": "upload-kit-item done"})
                     .append($('<input/>', {"name": name + '[' + options.pathAttributeName + ']', "value": file[options.pathAttribute], "type":"hidden"}))
                     .append($('<input/>', {"name": name + '[name]', "value": file.name, "type":"hidden"}))
@@ -175,6 +183,7 @@
                     item.css('backgroundImage', '');
                     item.find('span.name').text(file.name);
                 }
+
                 return item;
             },
             checkInputVisibility: function(){
@@ -195,22 +204,23 @@
             getNumberOfFiles: function() {
                 return $container.find('.files .upload-kit-item').length;
             },
-            getNewItemIndex: function () {
-                var existingIndexes = []
-                $container.find('.files .upload-kit-item').each(function () {
-                existingIndexes.push($(this).val());
-                })
-                return existingIndexes.length ? (Math.max(...existingIndexes)+1) : 0;
-          },
             updateOrder: function () {
                 $files.find('.upload-kit-item').each(function(index, item){
                     $(item).find('input[data-role=order]').val(index);
                 })
             }
         };
-
         methods.init.apply(this);
+        $('.upload-kit-item img').each(function() {
+            var $this = $(this);
+            var src = $this.attr('src');
+            $this.addClass('image');
+            var a = $('<a />').attr({
+                'href' : src,
+                'data-fancybox': "gallery"
+            });
+            $this.wrap(a);
+        });
         return this;
     };
-
 })(jQuery);
