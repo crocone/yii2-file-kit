@@ -41,7 +41,11 @@
                     );
                 $files.on('click', '.upload-kit-item .remove', function() {
                     $that = this;
-                    $('#delete-image').modal('show');
+                    if($('#delete-image').length){
+                        $('#delete-image').modal('show');
+                    }else{
+                        methods.removeItem($that);
+                    }
 
                 });
                 $(document).on('click', '#accept-delete-image', function() {
