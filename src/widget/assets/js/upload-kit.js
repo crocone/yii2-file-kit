@@ -181,6 +181,11 @@
                 if ((!file.type || file.type.search(/image\/.*/g) !== -1) && options.previewImage) {
                     item.removeClass('not-image').addClass('image');
                     item.prepend($('<img/>', {src: file[options.baseUrlAttribute] + '/' +file[options.pathAttribute]}));
+                    var a = $('<a />').attr({
+                        'href' : file[options.baseUrlAttribute] + '/' +file[options.pathAttribute],
+                        'data-fancybox': "galleryBox"
+                    });
+                    item.find('img').wrap(a);
                     item.find('span.type').text('');
                 } else {
                     item.removeClass('image').addClass('not-image');
@@ -215,16 +220,6 @@
             }
         };
         methods.init.apply(this);
-        $('.upload-kit-item img').each(function() {
-            var $this = $(this);
-            var src = $this.attr('src');
-            $this.addClass('image');
-            var a = $('<a />').attr({
-                'href' : src,
-                'data-fancybox': "gallery"
-            });
-            $this.wrap(a);
-        });
         return this;
     };
 })(jQuery);
