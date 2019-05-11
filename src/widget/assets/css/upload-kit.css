@@ -92,10 +92,10 @@
 .upload-kit .upload-kit-item .remove {
   display: none;
   cursor: pointer;
-  font-size: 3em;
+  font-size: 2em;
   text-align: center;
   top: 9%;
-  left: 94%;
+  left: 97%;
   margin-left: -25px;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 4px;
