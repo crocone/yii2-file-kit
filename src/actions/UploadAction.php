@@ -10,6 +10,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\Response;
 use yii\web\UploadedFile;
+use common\models\FileStorageItem;
 
 /**
 * Class UploadAction
