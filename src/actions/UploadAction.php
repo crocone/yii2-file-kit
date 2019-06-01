@@ -138,6 +138,7 @@ class UploadAction extends BaseAction
 	                    $model->path = $path;
 	                    $model->base_url = $this->getFileStorage()->baseUrl;
 	                    $model->size = $uploadedFile->size;
+			    $model->delete_url =  Url::to([$this->deleteRoute, 'path' => $path]);
 	                    $model->type = $uploadedFile->type;
 	                    $model->name = $uploadedFile->name;
 	                    if (Yii::$app->request->getIsConsoleRequest() === false) {
