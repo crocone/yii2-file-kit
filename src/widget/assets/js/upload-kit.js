@@ -169,6 +169,7 @@
                     .append($('<input/>', {"name": name + '[' + options.pathAttributeName + ']', "value": file[options.pathAttribute], "type":"hidden"}))
                     .append($('<input/>', {"name": name + '[name]', "value": file.name, "type":"hidden"}))
                     .append($('<input/>', {"name": name + '[size]', "value": file.size, "type":"hidden"}))
+                    .append($('<input/>', {"name": name + '[id]', "value": file.image_id, "type":"hidden"}))
                     .append($('<input/>', {"name": name + '[type]', "value": file.type, "type":"hidden"}))
                     .append($('<input/>', {"name": name + '[order]', "value": file.order, "type":"hidden", "data-role": "order"}))
                     .append($('<input/>', {"name": name + '[' + options.baseUrlAttributeName + ']', "value": file[options.baseUrlAttribute], "type":"hidden"}))
