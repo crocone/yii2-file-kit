@@ -132,6 +132,19 @@ class UploadAction extends BaseAction
                     $path = $this->getFileStorage()->save($uploadedFile, false, false, [], $this->uploadPath);
 
                     if ($path) {
+	                    $model = new FileStorageItem();
+	                    $model->component = 'fileStorage';
+	                    $model->path = $path;
+	                    $model->base_url = $this->getFileStorage()->baseUrl;
+	                    $model->size = $uploadedFile->size;
+	                    $model->type = $uploadedFile->type;
+	                    $model->name = $uploadedFile->name;
+	                    if (Yii::$app->request->getIsConsoleRequest() === false) {
+		                    $model->upload_ip = Yii::$app->request->getUserIP();
+	                    }
+	                    $model->save();
+	                    $output['image_id'] = $model->id;
+                        $output[$this->responsePathParam] = $path;
                         $output[$this->responsePathParam] = $path;
                         $output[$this->responseUrlParam] = $this->getFileStorage()->baseUrl . '/' . $path;
                         $output[$this->responseDeleteUrlParam] = Url::to([$this->deleteRoute, 'path' => $path]);
