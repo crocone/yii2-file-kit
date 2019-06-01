@@ -144,7 +144,7 @@ class UploadAction extends BaseAction
 		                    $model->upload_ip = Yii::$app->request->getUserIP();
 	                    }
 	                    $model->save();
-	                    $output['image_id'] = $model->id;
+	                    $output['id'] = $model->id;
                         $output[$this->responsePathParam] = $path;
                         $output[$this->responsePathParam] = $path;
                         $output[$this->responseUrlParam] = $this->getFileStorage()->baseUrl . '/' . $path;
