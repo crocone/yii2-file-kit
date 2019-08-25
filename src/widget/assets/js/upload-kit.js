@@ -178,7 +178,7 @@
                         "title": file.name,
                         "text": options.showPreviewFilename ? file.name : null
                     }))
-                    .append($('<span/>', {"class": "fas fa-minus remove", "data-url": file.delete_url}));
+                    .append($('<span/>', {"class": "fa fa-minus remove", "data-url": file.delete_url}));
                 if ((!file.type || file.type.search(/image\/.*/g) !== -1) && options.previewImage) {
                     item.removeClass('not-image').addClass('image');
                     item.prepend($('<img/>', {src: file[options.baseUrlAttribute] + '/' +file[options.pathAttribute]}));
